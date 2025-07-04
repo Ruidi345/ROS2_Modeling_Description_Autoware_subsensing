@@ -120,3 +120,18 @@ repositories:
     type: git
     url: https://github.com/tier4/agnocast.git
     version: 2.1.1
+  # Add Volkswagen id buzz sensor kit model
+  launcher/autoware_launch/sensor_kit/tuc_sensor_kit_launch:
+    type: git
+    url: git@gitlab.tu-clausthal.de:isse/rg-dacs/tuc_sensor_kit_launch.git
+    version: dev
+  # Add Volkswagen id buzz vehicle kit model
+  launcher/autoware_launch/vehicle/tuc_vehicle_launch:
+    type: git
+    url: git@gitlab.tu-clausthal.de:isse/rg-dacs/tuc_vehicle_launch.git
+    version: main
+  # Add GNSS MGRS Driver 
+  universe/external/gnss_mgrs_driver:
+    type: git
+    url: git@gitlab.tu-clausthal.de:isse/rg-dacs/gnss_mgrs_driver.git
+    version: main

@@ -198,6 +198,7 @@ main() {
     set -x
     docker run -it --rm --net=host ${GPU_FLAG} ${USER_ID} ${MOUNT_X} \
         -e XAUTHORITY=${XAUTHORITY} -e XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR -e NVIDIA_DRIVER_CAPABILITIES=all -e TZ="$(cat /etc/timezone)" \
+        -v /home/rgdacs/.ssh:/workspace/.ssh:rw \
         ${WORKSPACE} ${MAP} ${DATA} ${IMAGE} \
         ${LAUNCH_CMD}
 }
