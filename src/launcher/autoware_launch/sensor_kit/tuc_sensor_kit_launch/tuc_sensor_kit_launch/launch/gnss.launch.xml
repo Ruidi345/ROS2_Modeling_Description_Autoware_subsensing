@@ -1,6 +1,0 @@
-<launch>
-  <arg name="launch_driver" default="true"/>
-  <!-- MGRS Pose to NavSatFix -->
-  <include file="$(find-pkg-share gnss_mgrs_driver)/launch/gnss_mgrs_driver.launch.py">
-  </include>
-</launch>
