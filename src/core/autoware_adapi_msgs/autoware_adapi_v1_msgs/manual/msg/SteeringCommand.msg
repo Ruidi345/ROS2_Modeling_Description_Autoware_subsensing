@@ -1,3 +1,0 @@
-builtin_interfaces/Time stamp
-float32 steering_tire_angle
-float32 steering_tire_velocity
