@@ -1,0 +1,86 @@
+@startuml ring_outlier_filter
+' Ground Truth Diagram for RingOutlierFilterComponent
+' Source: autoware_pointcloud_preprocessor
+' Node name: ring_outlier_filter
+
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontSize 14
+}
+skinparam frame {
+  BackgroundColor #E8F4F8
+  BorderColor #2980B9
+  FontSize 14
+}
+skinparam folder {
+  BackgroundColor #FFF9E6
+  BorderColor #F39C12
+  FontSize 14
+}
+skinparam component {
+  BackgroundColor #E8F8F5
+  BorderColor #27AE60
+  FontSize 19
+}
+skinparam interface {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+
+component "<<AtomicRosNodeClassifier>>\nRingOutlierFilterComponent" as node {
+    portin " " as s1
+    portout " " as p1
+    portout " " as p2
+    portout " " as p3
+    portout " " as p4
+    portout " " as p5
+    portout " " as p6
+    portout " " as p7
+}
+
+' Input Topics
+frame "s1" as topic_in_pc {
+    rectangle "**sensor_msgs::msg::PointCloud2**" as t_in_pc
+}
+
+' Output Topics
+frame "p1" as topic_out_pc {
+    rectangle "**sensor_msgs::msg::PointCloud2**" as t_out_pc
+}
+
+frame "p2" as topic_out_debug_pc {
+    rectangle "**sensor_msgs::msg::PointCloud2**\ndebug/ring_outlier_filter" as t_out_debug_pc
+}
+
+frame "p3" as topic_out_visibility {
+    rectangle "**autoware_internal_debug_msgs::msg::Float32Stamped**\nring_outlier_filter/debug/visibility" as t_out_visibility
+}
+
+frame "p4" as topic_debug_cyclic {
+    rectangle "**autoware_internal_debug_msgs::msg::Float64Stamped**\ndebug/cyclic_time_ms" as t_debug_cyclic
+}
+
+frame "p5" as topic_debug_processing {
+    rectangle "**autoware_internal_debug_msgs::msg::Float64Stamped**\ndebug/processing_time_ms" as t_debug_processing
+}
+
+frame "p6" as topic_debug_latency {
+    rectangle "**autoware_internal_debug_msgs::msg::Float64Stamped**\ndebug/pipeline_latency_ms" as t_debug_latency
+}
+
+frame "p7" as topic_out_pt {
+    rectangle "**autoware_internal_msgs::msg::PublishedTime**" as t_out_pt
+}
+
+' Connections
+topic_in_pc ---> s1 : callback
+p1 ---> topic_out_pc
+p2 ---> topic_out_debug_pc
+p3 ---> topic_out_visibility
+p4 ---> topic_debug_cyclic
+p5 ---> topic_debug_processing
+p6 ---> topic_debug_latency
+p7 ---> topic_out_pt
+
+@enduml

@@ -1,0 +1,79 @@
+@startuml crop_box_filter
+' Ground Truth Diagram for CropBoxFilterComponent
+' Source: autoware_pointcloud_preprocessor
+' Node name: crop_box_filter
+
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontSize 14
+}
+skinparam frame {
+  BackgroundColor #E8F4F8
+  BorderColor #2980B9
+  FontSize 14
+}
+skinparam folder {
+  BackgroundColor #FFF9E6
+  BorderColor #F39C12
+  FontSize 14
+}
+skinparam component {
+  BackgroundColor #E8F8F5
+  BorderColor #27AE60
+  FontSize 19
+}
+skinparam interface {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+
+component "<<AtomicRosNodeClassifier>>\nCropBoxFilterComponent" as node {
+    portin "callback" as s1
+    portout " " as p1
+    portout " " as p2
+    portout " " as p3
+    portout " " as p4
+    portout " " as p5
+    portout " " as p6
+}
+
+' Input Topics
+frame "s1" as topic_in_pc {
+    rectangle "**sensor_msgs::msg::PointCloud2**" as t_in_pc
+}
+
+' Output Topics
+frame "p1" as topic_out_pc {
+    rectangle "**sensor_msgs::msg::PointCloud2**" as t_out_pc
+}
+
+frame "p2" as topic_out_polygon {
+    rectangle "**geometry_msgs::msg::PolygonStamped**" as t_out_polygon
+}
+
+frame "p3" as topic_out_pt {
+    rectangle "**autoware_internal_msgs::msg::PublishedTime**" as t_out_pt
+}
+
+frame "p4" as topic_out_fs {
+    rectangle "**autoware_internal_debug_msgs::msg::Float64Stamped**" as t_out_fs
+}
+
+frame "p5" as topic_out_processing_time {
+    rectangle "**autoware_internal_debug_msgs::msg::Float64Stamped**" as t_out_processing_time
+}
+
+frame "p6" as topic_out_pipeline_latency {
+    rectangle "**autoware_internal_debug_msgs::msg::Float64Stamped**" as t_out_pipeline_latency
+}
+
+' Connections
+topic_in_pc ---> s1 
+p1 ---> topic_out_pc
+p2 ---> topic_out_polygon
+p3 ---> topic_out_pt
+p4 ---> topic_out_fs
+p5 ---> topic_out_processing_time
+p6 ---> topic_out_pipeline_latency
+@enduml

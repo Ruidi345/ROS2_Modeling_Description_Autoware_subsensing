@@ -1,0 +1,107 @@
+@startuml
+!theme plain
+left to right direction
+skinparam packageStyle rectangle
+    
+    component "velodyne_lidar" as velodyne_lidar <<ComposedRosNodeClassifier>> {
+        
+        portin " s1 /sensor_msgs::msg::PointCloud2 " as portoutside1
+        portin " s2 /sensor_msgs::msg::PointCloud2 " as portoutside2
+        portin " s3 /sensor_msgs::msg::PointCloud2 " as portoutside3
+
+        ' OUTPUT TOPICS (Published) - crop_box_filter_self
+        portout "p2 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside4
+        portout "p3 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside5
+        portout "p4 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside6
+        portout "p5 / autoware_internal_msgs::msg::PublishedTime" as portoutside7
+        portout "p6 / geometry_msgs::msg::PolygonStamped" as portoutside8
+
+        ' OUTPUT TOPICS (Published) - crop_box_filter_mirror
+        portout "p7 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside9
+        portout "p8 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside10
+        portout "p9 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside11
+        portout "p10 / autoware_internal_msgs::msg::PublishedTime" as portoutside12
+        portout "p11 / geometry_msgs::msg::PolygonStamped" as portoutside13
+
+        ' OUTPUT TOPICS (Published) - distortion_corrector
+        portout "p12 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside14
+        portout "p13 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside15
+        portout "p14 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside16
+
+        ' OUTPUT TOPICS (Published) - ring_outlier_filter
+        portout "p15 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside17
+        portout "p16 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside18
+        portout "p17 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside19
+        portout "p18 / autoware_internal_msgs::msg::PublishedTime" as portoutside20
+        portout "p19 / autoware_internal_debug_msgs::msg::Float32Stamped" as portoutside21
+        portout "p20 / sensor_msgs::msg::PointCloud2" as portoutside22
+
+        portout "p1 / sensor_msgs::msg::PointCloud2" as portoutside23
+
+        ' ROS NODE COMPONENTS
+        component "velodyne_node_container" as top_velodyne_node_container <<RosNodePart>> {
+            portin "s1" as port1
+            portin "s2" as port2
+            portin "s3" as port3
+
+            portout "p1" as port4
+            portout "p2" as port5
+            portout "p3" as port6
+            portout "p4" as port7
+            portout "p5" as port8
+
+            portout "p7" as port9
+            portout "p8" as port10
+            portout "p9" as port11
+            portout "p10" as port12
+            portout "p11" as port13
+
+            portout "p12" as port14
+            portout "p13" as port15
+            portout "p14" as port16
+
+            portout "p15" as port17
+            portout "p16" as port18
+            portout "p17" as port19
+            portout "p18" as port20
+            portout "p19" as port21
+            portout "p20" as port22
+
+            portout "p1" as port23
+        }
+        
+        ' CONNECTIONS: Input Subscriptions
+        portoutside1 --[#Blue,bold]-> port1 
+        portoutside2 --[#Blue,bold]-> port2 
+        portoutside3 --[#Blue,bold]-> port3 
+        
+        ' CONNECTIONS: crop_box_filter_self Publishers
+        port4 --[#Green,bold]-> portoutside4
+        port5 --[#Green,bold]-> portoutside5
+        port6 --[#Green,bold]-> portoutside6
+        port7 --[#Green,bold]-> portoutside7
+        port8 --[#Green,bold]-> portoutside8
+        
+        ' CONNECTIONS: crop_box_filter_mirror Publishers
+        port9 --[#Green,bold]-> portoutside9
+        port10 --[#Green,bold]-> portoutside10
+        port11 --[#Green,bold]-> portoutside11
+        port12 --[#Green,bold]-> portoutside12
+        port13 --[#Green,bold]-> portoutside13
+        
+        ' CONNECTIONS: distortion_corrector Publishers
+        port14 --[#Green,bold]-> portoutside14
+        port15 --[#Green,bold]-> portoutside15
+        port16 --[#Green,bold]-> portoutside16
+        
+        ' CONNECTIONS: ring_outlier_filter Publishers
+        port17 --[#Green,bold]-> portoutside17
+        port18 --[#Green,bold]-> portoutside18
+        port19 --[#Green,bold]-> portoutside19
+        port20 --[#Green,bold]-> portoutside20
+        port21 --[#Green,bold]-> portoutside21
+        port22 --[#Green,bold]-> portoutside22 
+
+        port23 --[#Green,bold]-> portoutside23
+    }
+@enduml

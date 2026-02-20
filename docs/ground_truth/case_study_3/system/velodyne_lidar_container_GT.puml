@@ -1,0 +1,142 @@
+@startuml
+!theme plain
+left to right direction
+skinparam packageStyle rectangle
+
+component "velodyne_node_container" as top_velodyne_node_container <<ComposedRosNodeClassifier>> {    
+
+
+        portin " s1 /sensor_msgs::msg::PointCloud2 " as portoutside1  
+
+        portout "p2 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside2
+        portout "p3 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside3
+        portout "p4 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside4
+        portout "p5 / autoware_internal_msgs::msg::PublishedTime" as portoutside5
+        portout "p6 / geometry_msgs::msg::PolygonStamped" as portoutside6
+
+        ' crop_box_filter_mirror
+        portout "p7 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside7
+        portout "p8 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside8
+        portout "p9 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside9
+        portout "p10 / autoware_internal_msgs::msg::PublishedTime" as portoutside10
+        portout "p11 / geometry_msgs::msg::PolygonStamped" as portoutside11
+
+        ' TOPICS  - distortion_corrector
+        portin " s2 /sensor_msgs::msg::PointCloud2 " as portoutside12
+        portin " s3 /sensor_msgs::msg::PointCloud2 " as portoutside13   
+
+        portout "p12 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside14
+        portout "p13 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside15
+        portout "p14 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside16
+
+        ' TOPICS - ring_outlier_filter
+        portout "p15 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside17
+        portout "p16 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside18
+        portout "p17 / autoware_internal_debug_msgs::msg::Float64Stamped" as portoutside19
+        portout "p18 / autoware_internal_msgs::msg::PublishedTime" as portoutside20
+        portout "p19 / autoware_internal_debug_msgs::msg::Float32Stamped" as portoutside21
+        portout "p20 / sensor_msgs::msg::PointCloud2" as portoutside22
+
+        portout "p1 / sensor_msgs::msg::PointCloud2" as portoutside23
+
+        ' ROS NODE COMPONENTS
+            component "crop_box_filter_self:\nCropBoxFilterComponent" as crop_box_self <<RosNodePart>>{
+            
+                portin "s1" as port1
+
+                portout "p1" as port2
+                portout "p2" as port3
+                portout "p3" as port4
+                portout "p4" as port5
+                portout "p5" as port6
+                portout "p6" as port7
+
+            }
+            component "crop_box_filter_mirror:\nCropBoxFilterComponent" as crop_box_mirror <<RosNodePart>>{
+
+                portin "s1" as port8
+
+                portout "p1" as port9
+                portout "p2" as port10
+                portout "p3" as port11
+                portout "p4" as port12
+                portout "p5" as port13
+                portout "p6" as port14  
+            }
+            component "distortion_corrector_node:\nDistortionCorrectorComponent" as distortion_corrector <<RosNodePart>>{
+
+                portin "s1" as port15
+                portin "s2" as port28
+                portin "s3" as port29
+
+                portout "p1" as port16
+                portout "p2" as port17
+                portout "p3" as port18
+                portout "p4" as port19
+            }
+            component "ring_outlier_filter:\nRingOutlierFilterComponent" as ring_outlier <<RosNodePart>>{
+
+                portin "s1" as port20
+
+                portout "p1" as port21
+                portout "p2" as port22
+                portout "p3" as port23
+                portout "p4" as port24
+                portout "p5" as port25
+                portout "p6" as port26
+                portout "p6" as port27 
+            }
+
+            ' INTERMEDIATE TOPICS
+            queue "self_cropped/pointcloud_ex" as p1_self_cropped
+            queue "mirror_cropped/pointcloud_ex" as p1_mirror_cropped
+            queue "rectified/pointcloud_ex" as p1_rectified
+
+        ' CONNECTIONS: Input Subscriptions
+        portoutside1 --[#Blue,bold]-> port1
+        portoutside12 --[#Blue,bold]-> port28
+        portoutside13 --[#Blue,bold]-> port29
+        
+        ' CONNECTIONS: crop_box_filter_self Publishers
+        port2 --[#Green,bold]-> p1_self_cropped
+        port3 --[#Green,bold]-> portoutside6
+        port4 --[#Green,bold]-> portoutside5
+        port5 --[#Green,bold]-> portoutside4
+        port6 --[#Green,bold]-> portoutside3
+        port7 --[#Green,bold]-> portoutside2
+
+        
+        ' CONNECTIONS: crop_box_filter_mirror Publishers
+        port9 --[#Green,bold]-> p1_mirror_cropped
+        port10 --[#Green,bold]-> portoutside11
+        port11 --[#Green,bold]-> portoutside10
+        port12 --[#Green,bold]-> portoutside9
+        port13 --[#Green,bold]-> portoutside8
+        port14 --[#Green,bold]-> portoutside7
+        
+        
+        ' CONNECTIONS: distortion_corrector Publishers
+        port16 --[#Green,bold]-> p1_rectified
+        port17 --[#Green,bold]-> portoutside16
+        port18 --[#Green,bold]-> portoutside15
+        port19 --[#Green,bold]-> portoutside14
+        
+        
+        ' CONNECTIONS: Pipeline Flow
+        p1_self_cropped --[#Blue,bold]-> port8
+        p1_mirror_cropped --[#Blue,bold]-> port15
+        p1_rectified --[#Blue,bold]-> port20
+        
+        ' CONNECTIONS: ring_outlier_filter Publishers
+        port22 --[#Green,bold]-> portoutside22
+        port23 --[#Green,bold]-> portoutside21
+        port24 --[#Green,bold]-> portoutside20
+        port25 --[#Green,bold]-> portoutside19
+        port26 --[#Green,bold]-> portoutside18
+        port27 --[#Green,bold]-> portoutside17
+
+        port21 --[#Green,bold]-> portoutside23
+    }
+}
+
+@enduml

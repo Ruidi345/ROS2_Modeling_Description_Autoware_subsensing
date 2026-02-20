@@ -1,0 +1,80 @@
+@startuml distortion_corrector
+' Ground Truth Diagram for DistortionCorrectorComponent
+' Source: autoware_pointcloud_preprocessor
+' Node name: distortion_corrector_node
+
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontSize 14
+}
+skinparam frame {
+  BackgroundColor #E8F4F8
+  BorderColor #2980B9
+  FontSize 14
+}
+skinparam folder {
+  BackgroundColor #FFF9E6
+  BorderColor #F39C12
+  FontSize 14
+}
+skinparam component {
+  BackgroundColor #E8F8F5
+  BorderColor #27AE60
+  FontSize 19
+}
+skinparam interface {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+
+component "<<AtomicRosNodeClassifier>>\nDistortionCorrectorComponent" as node {
+    portin "pointcloud_callback" as s1
+    portin "process_twist_message" as s2
+    portin "process_imu_message" as s3
+    portout " " as p1
+    portout " " as p2
+    portout " " as p3
+    portout " " as p4
+}
+
+' Input Topics
+frame "s1" as topic_in_pc {
+    rectangle "**sensor_msgs::msg::PointCloud2**" as t_in_pc
+}
+
+frame "s2" as topic_in_twist {
+    rectangle "**geometry_msgs::msg::TwistWithCovarianceStamped**" as t_in_twist
+}
+
+frame "s3" as topic_in_imu {
+    rectangle "**sensor_msgs::msg::Imu**" as t_in_imu
+}
+
+' Output Topics
+frame "p1" as topic_out_pc {
+    rectangle "**sensor_msgs::msg::PointCloud2**" as t_out_pc
+}
+
+frame "p2" as topic_out_fsp2 {
+    rectangle "**autoware_internal_debug_msgs::msg::Float64Stamped**" as t_out_fsp2
+}
+
+frame "p3" as topic_out_fsp3 {
+    rectangle "**autoware_internal_debug_msgs::msg::Float64Stamped**" as t_out_fsp3
+}
+
+frame "p4" as topic_out_fsp4 {
+    rectangle "**autoware_internal_debug_msgs::msg::Float64Stamped**" as t_out_fsp4
+}
+
+' Connections
+topic_in_pc ---> s1 
+topic_in_twist ---> s2 
+topic_in_imu --> s3 
+p1 ---> topic_out_pc
+p2 ---> topic_out_fsp2
+p3 ---> topic_out_fsp3
+p4 ---> topic_out_fsp4
+
+@enduml
