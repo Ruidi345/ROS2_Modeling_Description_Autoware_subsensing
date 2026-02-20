@@ -1,0 +1,59 @@
+@startuml
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontSize 14
+}
+
+skinparam frame {
+  BackgroundColor #E8F4F8
+  BorderColor #2980B9
+  FontSize 14
+}
+
+skinparam folder {
+  BackgroundColor #FFF9E6
+  BorderColor #F39C12
+  FontSize 14
+}
+
+skinparam component {
+  BackgroundColor #E8F8F5
+  BorderColor #27AE60
+  FontSize 19
+}
+
+skinparam interface {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+
+component "<<AtomicRosNodeClassifier>>\nDistortionCorrectorComponent" as node {
+  portin "pointcloud_callback" as s1
+  portin "twist_sub_" as s2
+  portin "imu_sub_" as s3
+  portout " " as p1
+}
+
+frame "s1" as topic_in_pointcloud {
+  rectangle "**sensor_msgs::msg::PointCloud2**" as t_in_pointcloud
+}
+
+frame "s2" as topic_in_twist {
+  rectangle "**geometry_msgs::msg::TwistWithCovarianceStamped**" as t_in_twist
+}
+
+frame "s3" as topic_in_imu {
+  rectangle "**sensor_msgs::msg::Imu**" as t_in_imu
+}
+
+frame "p1" as topic_out_pointcloud {
+  rectangle "**sensor_msgs::msg::PointCloud2**" as t_out_pointcloud
+}
+
+topic_in_pointcloud -[#blue,bold]-> s1
+topic_in_twist -[#blue,bold]-> s2
+topic_in_imu -[#blue,bold]-> s3
+p1 -[#green,bold]-> topic_out_pointcloud
+
+@enduml

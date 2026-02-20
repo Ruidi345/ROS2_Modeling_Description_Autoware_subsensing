@@ -1,0 +1,59 @@
+@startuml
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontSize 14
+}
+
+skinparam frame {
+  BackgroundColor #E8F4F8
+  BorderColor #2980B9
+  FontSize 14
+}
+
+skinparam folder {
+  BackgroundColor #FFF9E6
+  BorderColor #F39C12
+  FontSize 14
+}
+
+skinparam component {
+  BackgroundColor #E8F8F5
+  BorderColor #27AE60
+  FontSize 19
+}
+
+skinparam interface {
+  BackgroundColor transparent
+  BorderColor transparent
+}
+
+component "<<AtomicRosNodeClassifier>>\nRingOutlierFilterComponent" as node {
+  portin "callback" as s1
+  portout " " as p1
+  portout " " as p2
+}
+
+frame "s1" as topic_in_pointcloud {
+  rectangle "**sensor_msgs::msg::PointCloud2**" as t_in_pointcloud
+}
+
+frame "p1" as topic_out_filtered_pointcloud {
+  rectangle "**sensor_msgs::msg::PointCloud2**" as t_out_filtered_pointcloud
+}
+
+frame "p2" as topic_out_debug_pointcloud {
+  rectangle "**sensor_msgs::msg::PointCloud2**" as t_out_debug_pointcloud
+}
+
+folder "ps1" as param_service {
+  rectangle "**rcl_interfaces::msg::SetParameters**"
+  rectangle "paramCallback(...)"
+}
+
+topic_in_pointcloud -[#blue,bold]-> s1 
+p1 -[#green,bold]-> topic_out_filtered_pointcloud
+p2 -[#green,bold]-> topic_out_debug_pointcloud
+node --0 param_service
+
+@enduml

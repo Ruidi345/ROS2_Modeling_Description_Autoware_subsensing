@@ -1,0 +1,23 @@
+@startuml
+!theme plain
+left to right direction
+skinparam packageStyle rectangle
+
+component "velodyne_lidar" as Velodyne_Lidar <<ComposedRosNodeClassifier>> {
+
+    portin " s1 /sensor_msgs::msg::PointCloud2 " as portoutside1
+    portout "p1 / sensor_msgs::msg::PointCloud2" as portoutside2
+
+    component "velodyne_node_container" as velodyne_node_container <<RosNodePart>> {
+        portin "s1" as port1
+        portout "p1" as port2
+    }
+
+    ' CONNECTIONS: Input Subscriptions
+    portoutside1 --[#Blue,bold]-> port1
+
+    ' CONNECTIONS: velodyne_node_container Publishers
+    port2 --[#Green,bold]-> portoutside2
+}
+
+@enduml

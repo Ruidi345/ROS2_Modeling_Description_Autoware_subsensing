@@ -1,0 +1,53 @@
+@startuml
+!theme plain
+left to right direction
+skinparam packageStyle rectangle
+
+component "velodyne_node_container" as Velodyne_Node_Container <<ComposedRosNodeClassifier>> {
+
+    portin " s1 /sensor_msgs::msg::PointCloud2 " as portoutside1
+    portout "p1 / sensor_msgs::msg::PointCloud2" as portoutside2
+
+    component "crop_box_filter_self:CropBoxFilterComponent" as crop_box_filter_self <<RosNodePart>> {
+        portin "s1" as port1
+        portout "p1" as port2
+    }
+    component "crop_box_filter_mirror:CropBoxFilterComponent" as crop_box_filter_mirror <<RosNodePart>> {
+        portin "s1" as port3
+        portout "p1" as port4
+    }
+    component "distortion_corrector_node:DistortionCorrectorComponent" as distortion_corrector_node <<RosNodePart>> {
+        portin "s1" as port5
+        portout "p1" as port6
+    }
+    component "ring_outlier_filter:RingOutlierFilterComponent" as ring_outlier_filter <<RosNodePart>> {
+        portin "s1" as port7
+        portout "p1" as port8
+    }
+
+    queue "self_cropped/pointcloud_ex" as self_cropped_pointcloud_ex
+    queue "mirror_cropped/pointcloud_ex" as mirror_cropped_pointcloud_ex
+    queue "rectified/pointcloud_ex" as rectified_pointcloud_ex
+
+    ' CONNECTIONS: Input Subscriptions
+    portoutside1 --[#Blue,bold]-> port1
+
+    ' CONNECTIONS: crop_box_filter_self Publishers
+    port2 --[#Green,bold]-> self_cropped_pointcloud_ex
+
+    ' CONNECTIONS: Pipeline Flow
+    self_cropped_pointcloud_ex --[#Blue,bold]-> port3
+    mirror_cropped_pointcloud_ex --[#Blue,bold]-> port5
+    rectified_pointcloud_ex --[#Blue,bold]-> port7
+
+    ' CONNECTIONS: crop_box_filter_mirror Publishers
+    port4 --[#Green,bold]-> mirror_cropped_pointcloud_ex
+
+    ' CONNECTIONS: distortion_corrector_node Publishers
+    port6 --[#Green,bold]-> rectified_pointcloud_ex
+
+    ' CONNECTIONS: ring_outlier_filter Publishers
+    port8 --[#Green,bold]-> portoutside2
+}
+
+@enduml
